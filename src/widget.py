@@ -1,4 +1,4 @@
-from src.masks import get_mask_card_number
+from src.masks import get_mask_card_number, get_mask_account
 
 
 def mask_account_card(string: str) -> tuple[str, str]:
@@ -7,13 +7,13 @@ def mask_account_card(string: str) -> tuple[str, str]:
     name_card_or_score = " ".join(string_split[:2])
     number_card_or_score = string_split[-1]
 
-    return name_card_or_score, number_card_or_score
+    if name_card_or_score.lower() == "счет":
+        number_card_or_score = get_mask_account(number_card_or_score)
+    else: number_card_or_score = get_mask_account(number_card_or_score)
+    return f"{name_card_or_score} {number_card_or_score}"
 
 test = "Visa Platinum 7000792289606361"
-name_card, card_number = mask_account_card(test)
-
-masked_number = get_mask_card_number(card_number)
-print(f"{name_card}: {masked_number}")
+print(mask_account_card(test))
 
 
 def get_date(data: str) -> str:
